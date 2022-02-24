@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    pod-name: client-can-connect
+  name: client-can-connect
+  namespace: default
+spec:
+  containers:
+  - args:
+    - -c
+    - for i in $(seq 1 5); do /agnhost connect 10.96.69.9:81 --protocol tcp --timeout
+      8s && exit 0 || sleep 1; done; exit 1
+    command:
+    - /bin/sh
+    image: k8s.gcr.io/e2e-test-images/agnhost:2.32
+    imagePullPolicy: IfNotPresent
+    name: client
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-p6cmh
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: a-ms-2004-win-1
+  restartPolicy: Never
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  volumes:
+  - name: kube-api-access-p6cmh
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace

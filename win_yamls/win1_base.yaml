@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pwsh2
+  namespace: default
+spec:
+  nodeName: a-ms-2004-win-1
+  containers:
+  - name: powershell
+    image: mcr.microsoft.com/windows/servercore:1809
+    args:
+    - powershell.exe
+    - -Command
+    - "Start-Sleep 360000"
+    imagePullPolicy: IfNotPresent

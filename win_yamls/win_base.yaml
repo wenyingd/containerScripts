@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pwsh1
+  namespace: default
+spec:
+  containers:
+  - name: powershell
+    image: mcr.microsoft.com/windows/servercore:1809
+    args:
+    - powershell.exe
+    - -Command
+    - "Start-Sleep 360000"
+    imagePullPolicy: IfNotPresent
+  nodeSelector:
+    kubernetes.io/os: windows

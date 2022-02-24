@@ -1,0 +1,12 @@
+apiVersion: "crd.antrea.io/v1alpha2"
+kind: Multicast
+metadata:
+  name: mc1
+spec:
+  mgroup: 224.96.1.1
+  members:
+    podSelector:
+      matchLabels:
+        app: mc1
+  externalInterfaces: ens224,ens225
+  local: false

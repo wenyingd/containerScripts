@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: server-win
+  namespace: default
+  labels:
+    app: MyApp
+spec:
+  nodeName: a-ms-2004-win-0
+  containers:
+  - image: "harbor-repo.vmware.com/dockerhub-proxy-cache/e2eteam/agnhost:2.20"
+    args: ["netexec", "--http-port=80","--udp-port=81"]
+    ports:
+    - containerPort: 80
+      name: http
+    - containerPort: 81
+      name: udp
+    imagePullPolicy: IfNotPresent
+    name: server
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: server-lin
+  namespace: default
+  labels:
+    app: MyApp
+spec:
+  nodeName: a-ms-2004-1
+  containers:
+  - image: "projects.registry.vmware.com/antrea/agnhost:2.26"
+    args:
+      - netexec
+      - --http-port=80
+      - --udp-port=80
+    imagePullPolicy: IfNotPresent
+    name: netexec
+  restartPolicy: Always

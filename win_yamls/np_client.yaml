@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2021-07-01T05:08:26Z"
+  generateName: client-b-
+  labels:
+    pod-name: client-b
+  name: client-b-8jt8w
+  namespace: network-policy-5234
+  resourceVersion: "1237124"
+  uid: ba69af07-cf58-4fd8-8217-797176680da5
+spec:
+  containers:
+  - args:
+    - -c
+    - for i in $(seq 1 5); do /agnhost connect 10.109.33.217:80 --protocol tcp --timeout
+      8s && exit 0 || sleep 1; done; exit 1
+    command:
+    - /bin/sh
+    image: k8s.gcr.io/e2e-test-images/agnhost:2.32
+    imagePullPolicy: IfNotPresent
+    name: client
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-jhczv
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: a-ms-2004-win-0
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Never
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-jhczv
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2021-07-01T05:08:26Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2021-07-01T05:08:33Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2021-07-01T05:08:33Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2021-07-01T05:08:26Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://8185f1fb20b4b25b4324c4959912549f9e94fa81cd8797ef7e84e8386674e257
+    image: k8s.gcr.io/e2e-test-images/agnhost:2.32
+    imageID: docker-pullable://k8s.gcr.io/e2e-test-images/agnhost@sha256:758db666ac7028534dba72e7e9bb1e57bb81b8196f976f7a5cc351ef8b3529e1
+    lastState: {}
+    name: client
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2021-07-01T05:08:30Z"
+  hostIP: 10.176.26.152
+  phase: Running
+  podIP: 192.168.250.49
+  podIPs:
+  - ip: 192.168.250.49
+  qosClass: BestEffort
+  startTime: "2021-07-01T05:08:26Z"

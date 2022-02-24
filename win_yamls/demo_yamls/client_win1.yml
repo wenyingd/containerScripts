@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client-win1
+  namespace: default
+  labels:
+    app: client-1
+spec:
+  nodeName: a-ms-0006-win-1
+  containers:
+  - image: "projects.registry.vmware.com/antrea/e2eteam-busybox:1.29-windows-amd64-1809"
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+    name: busybox
+  restartPolicy: Always
